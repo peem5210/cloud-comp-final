@@ -30,7 +30,7 @@ class RekognitionImage:
     Encapsulates an Amazon Rekognition image. This class is a thin wrapper
     around parts of the Boto3 Amazon Rekognition API.
     """
-    def __init__(self, image, image_name):
+    def __init__(self, image, image_name, rekognition_client):
         """
         Initializes the image object.
 
@@ -39,15 +39,9 @@ class RekognitionImage:
         :param image_name: The name of the image.
         :param rekognition_client: A Boto3 Rekognition client.
         """
-        load_dotenv()
-        session = boto3.Session(
-            aws_access_key_id=os.getenv('AWS_ACCESS_KEY'),
-            aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY')
-        )
-        self.sns_re
         self.image = image
         self.image_name = image_name
-        self.rekognition_client = session.client('rekognition')
+        self.rekognition_client = rekognition_client
 
     @classmethod
     def from_file(cls, image_file_name, rekognition_client, image_name=None):
