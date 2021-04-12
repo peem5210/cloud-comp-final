@@ -52,6 +52,22 @@ def show_polygons(image_bytes, polygons, color):
             outline=color)
     image.show()
 
+def save_polygons(image_bytes, polygons, color):
+    """
+    Draws polygons on an image and shows it with the default image viewer.
+
+    :param image_bytes: The image to draw, as bytes.
+    :param polygons: The list of polygons to draw on the image.
+    :param color: The color to use to draw the polygons.
+    """
+    image = Image.open(io.BytesIO(image_bytes))
+    draw = ImageDraw.Draw(image)
+    for polygon in polygons:
+        draw.polygon([
+            (image.width * point['X'], image.height * point['Y']) for point in polygon],
+            outline=color)
+    image.show()
+
 
 class RekognitionFace:
     """Encapsulates an Amazon Rekognition face."""
