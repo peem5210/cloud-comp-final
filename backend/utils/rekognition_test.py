@@ -14,11 +14,11 @@ session = boto3.Session(
     aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY')
 )
 
-rekognition_client = session.client('rekognition')
+rekognition_client = session.client('rekognition', region_name='us-west-2')
 
 
 # rekognition_image = RekognitionImage(image, image_name, rekognition_client)
-book_file_name = '/Users/passawityakul/Downloads/test_text.png'
+book_file_name = '/Users/ttrustt/Downloads/test_text.png'
 book_image = RekognitionImage.from_file(book_file_name, rekognition_client)
 print(f"Detecting text in {book_image.image_name}...")
 texts = book_image.detect_text()
