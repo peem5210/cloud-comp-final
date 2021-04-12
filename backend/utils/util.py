@@ -18,7 +18,9 @@ class Util:
     def init_session(self):
         return boto3.Session(
             aws_access_key_id=os.getenv('AWS_ACCESS_KEY'),
-            aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'))
+            aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'), 
+            region_name='us-west-2'
+        )
 
     def send_message(self,phone_number, message):
         self.sns_wrapper.send_message_to_phone(phone_number, message)
