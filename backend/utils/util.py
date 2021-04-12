@@ -24,7 +24,7 @@ class Util:
         self.sns_wrapper.send_message_to_phone(phone_number, message)
 
     def text_from_image_path(self,path_to_file='/Users/passawityakul/Downloads/test_text.png'):
-        book_file_name = '/Users/passawityakul/Downloads/test_text.png'
+        book_file_name = path_to_file
         book_image = RekognitionImage.from_file(book_file_name, self.rekognition_client)
         print(f"Detecting text in {book_image.image_name}...")
         texts = book_image.detect_text()
