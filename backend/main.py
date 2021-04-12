@@ -1,5 +1,5 @@
 from typing import Optional
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile,HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -23,21 +23,29 @@ class SmsDto(BaseModel):
 
 @app.post("/send-sms")
 def send_sms_to_phone(dto: SmsDto):
-    util.send_message("+66916988521","hello")
+    try:
+        util.send_message(dto.phone_number,dto.message)
+    except(Exception) as e:
+         return HTTPException(status_code=304, detail=str(e)) 
     return dto
 
 @app.post("/text-from-image")
 async def create_upload_file(uploaded_file: UploadFile = File(...)):
+    text = {}
     if not uploaded_file.filename.endswith('.jpg') and not uploaded_file.filename.endswith('.png'):
-        return "Image not valid"
-    file_location = f"tmp_files/{uploaded_file.filename}"
-    with open(file_location, "wb+") as file_object:
-        file_object.write(uploaded_file.file.read())
-    util.text_from_image_path(path_to_file = f"tmp_files/{uploaded_file.filename}")
-    return {"info": f"file '{uploaded_file.filename}' saved at '{file_location}'"}
+        return HTTPException(status_code=304, detail='Image type invalid')
+    try:
+        file_location = f"tmp_files/{uploaded_file.filename}"
+        with open(file_location, "wb+") as file_object:
+            file_object.write(uploaded_file.file.read())
+        text = util.text_from_image_path(path_to_file = f"tmp_files/{uploaded_file.filename}")
+    except(Exception) as e:
+         return HTTPException(status_code=304, detail=str(e)) 
+    return text
 
 
-@app.post("/files/")
-async def create_file(file: bytes = File(...)):
-    return {"file_size": len(file)}
+# @app.exception_handler(StarletteHTTPException)
+# async def custom_http_exception_handler(request, exc):
+#     print(f"OMG! An HTTP error!: {repr(exc)}")
+#     return await http_exception_handler(request, exc)
 

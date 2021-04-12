@@ -26,7 +26,6 @@ class Util:
     def text_from_image_path(self,path_to_file='/Users/passawityakul/Downloads/test_text.png'):
         book_file_name = path_to_file
         book_image = RekognitionImage.from_file(book_file_name, self.rekognition_client)
-        print(f"Detecting text in {book_image.image_name}...")
         texts = book_image.detect_text()
-        print(f"Found {len(texts)} text instances. Here are the first seven:")
         show_polygons(book_image.image['Bytes'], [text.geometry['Polygon'] for text in texts], 'aqua')
+        return texts
