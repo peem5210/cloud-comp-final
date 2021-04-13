@@ -10,7 +10,7 @@ from .rekognition_objects import (
     RekognitionModerationLabel, RekognitionText, show_bounding_boxes, show_polygons)
 
 
-class Util:
+class AWSConnector:
     def __init__(self):
         load_dotenv()
         self.sns_wrapper = SnsWrapper()

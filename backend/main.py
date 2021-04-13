@@ -50,14 +50,29 @@ async def create_upload_file(uploaded_file: UploadFile = File(...)):
          return HTTPException(status_code=304, detail=str(e)) 
     return text
 
+class order_DTO(BaseModel):
+    status: str
+
 @app.get("/get-order")
 def get_all_order():
     try:
         message = mysql_connector.get_order()
         if(not message[0]):
-            response = JSONResponse(content=jsonable_encoder({'success':message[0], 'status':message[1]}), status_code=200)
+            response = JSONResponse(content=jsonable_encoder({'success':message[0], 'message':message[1]}), status_code=200)
         else:
-            response = JSONResponse(content=jsonable_encoder({'success':message[0], 'status':message[1], 'data':message[2], 'columns':message[3]}), status_code=200)
+            response = JSONResponse(content=jsonable_encoder({'success':message[0], 'message':message[1], 'data':message[2], 'columns':message[3]}), status_code=200)
+    except(Exception) as e:
+         return HTTPException(status_code=304, detail=str(e)) 
+    return response
+
+@app.post("/get-order-by-status")
+def get_order_by_status(dto: order_DTO):
+    try:
+        message = mysql_connector.get_order_by_status(dto.status)
+        if(not message[0]):
+            response = JSONResponse(content=jsonable_encoder({'success':message[0], 'message':message[1]}), status_code=200)
+        else:
+            response = JSONResponse(content=jsonable_encoder({'success':message[0], 'message':message[1], 'data':message[2], 'columns':message[3]}), status_code=200)
     except(Exception) as e:
          return HTTPException(status_code=304, detail=str(e)) 
     return response
