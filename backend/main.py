@@ -1,11 +1,17 @@
 from typing import Optional
-from fastapi import FastAPI, File, UploadFile,HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from utils.util import Util
+from utils.mysql_connector import MySQLConnector
+
+
 app = FastAPI()
 util = Util()
+mysql_connector = MySQLConnector()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -13,6 +19,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
@@ -24,7 +31,7 @@ class SmsDto(BaseModel):
 @app.post("/send-sms")
 def send_sms_to_phone(dto: SmsDto):
     try:
-        util.send_message(dto.phone_number,dto.message)
+        util.send_message(dto.phone_number, dto.message)
     except(Exception) as e:
          return HTTPException(status_code=304, detail=str(e)) 
     return dto
@@ -43,6 +50,17 @@ async def create_upload_file(uploaded_file: UploadFile = File(...)):
          return HTTPException(status_code=304, detail=str(e)) 
     return text
 
+@app.get("/get-order")
+def get_all_order():
+    try:
+        message = mysql_connector.get_order()
+        if(not message[0]):
+            response = JSONResponse(content=jsonable_encoder({'success':message[0], 'status':message[1]}), status_code=200)
+        else:
+            response = JSONResponse(content=jsonable_encoder({'success':message[0], 'status':message[1], 'data':message[2], 'columns':message[3]}), status_code=200)
+    except(Exception) as e:
+         return HTTPException(status_code=304, detail=str(e)) 
+    return response
 
 # @app.exception_handler(StarletteHTTPException)
 # async def custom_http_exception_handler(request, exc):

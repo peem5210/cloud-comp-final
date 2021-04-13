@@ -9,11 +9,12 @@ from .rekognition_objects import (
     RekognitionFace, RekognitionCelebrity, RekognitionLabel,
     RekognitionModerationLabel, RekognitionText, show_bounding_boxes, show_polygons)
 
+
 class Util:
     def __init__(self):
         load_dotenv()
         self.sns_wrapper = SnsWrapper()
-        self.rekognition_client = self.init_session().client('rekognition')
+        self.rekognition_client = self.init_session().client('rekognition', region_name='us-west-2')
 
     def init_session(self):
         return boto3.Session(
