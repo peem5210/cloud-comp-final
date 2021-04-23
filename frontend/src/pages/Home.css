@@ -1,0 +1,10 @@
+.header {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+}
