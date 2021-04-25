@@ -17,7 +17,7 @@ function ProfileManagement() {
             try {
                 const accessToken = await getAccessTokenSilently({
                     audience: 'ordersist-backend',
-                    scope: 'openid profile email',
+                    scope: 'read:user_information',
                 });
                 setToken(accessToken);
             } catch (e) {
