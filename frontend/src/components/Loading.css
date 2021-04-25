@@ -1,0 +1,12 @@
+.container {
+    width: 100%;
+    display: grid;
+    justify-content: space-around;
+}
+
+.loading-container {
+    width: 100%;
+    margin-top: 200px;
+    display: grid;
+    justify-content: space-around;
+}

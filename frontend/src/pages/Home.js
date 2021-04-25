@@ -1,5 +1,7 @@
 import React from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
+import Loading from '../components/Loading';
+import './Home.css';
 
 function Home() {
     const { isAuthenticated } = useAuth0();
@@ -11,4 +13,6 @@ function Home() {
     )
 }
 
-export default Home
+export default withAuthenticationRequired(Home, {
+    onRedirecting: () => <Loading page='home' />
+});
