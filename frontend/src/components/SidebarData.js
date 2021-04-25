@@ -1,6 +1,6 @@
 export const SidebarData = [
     {
-        title: 'Home',
+        title: 'Manage Profile',
         path: '/',
         cName: 'nav-text'
     },
