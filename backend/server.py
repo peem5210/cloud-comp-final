@@ -5,13 +5,19 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
-from utils.aws_connector import AWSConnector
-from utils.mysql_connector import MySQLConnector
-
+from service.util.aws_connector import AWSConnector
+from service.util.mysql_connector import MySQLConnector
+from service.company_service import CompanyService
+from service.aws_service import AwsService
 
 app = FastAPI()
 aws_connector = AWSConnector()
 mysql_connector = MySQLConnector()
+
+aws_service = AwsService(aws_connector)
+company_service = CompanyService(aws_service,mysql_connector)
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -31,7 +37,7 @@ class SmsDto(BaseModel):
 @app.post("/send-sms")
 def send_sms_to_phone(dto: SmsDto):
     try:
-        aws_connector.send_message(dto.phone_number, dto.message)
+        aws_service.send_message(dto.phone_number, dto.message)
     except(Exception) as e:
          return HTTPException(status_code=304, detail=str(e)) 
     return dto
@@ -45,7 +51,7 @@ async def create_upload_file(uploaded_file: UploadFile = File(...)):
         file_location = f"tmp_files/{uploaded_file.filename}"
         with open(file_location, "wb+") as file_object:
             file_object.write(uploaded_file.file.read())
-        text = aws_connector.text_from_image_path(path_to_file = f"tmp_files/{uploaded_file.filename}")
+        text = aws_service.text_from_image_path(path_to_file = f"tmp_files/{uploaded_file.filename}")
     except(Exception) as e:
          return HTTPException(status_code=304, detail=str(e)) 
     return text
