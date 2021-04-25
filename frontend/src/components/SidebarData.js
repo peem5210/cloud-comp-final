@@ -6,7 +6,12 @@ export const SidebarData = [
     },
     {
         title: 'Manage Order',
-        path: '/',
+        path: '/order',
+        cName: 'nav-text'
+    },
+    {
+        title: 'Ship Order',
+        path: '/shipping',
         cName: 'nav-text'
     },
 ]

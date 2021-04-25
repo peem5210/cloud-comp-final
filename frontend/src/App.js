@@ -4,6 +4,7 @@ import Auth0ProviderWithHistory from './Auth0Provider.js';
 import Sidebar from './components/Sidebar';
 import ProfileManagement from './pages/ProfileManagement';
 import OrderManagement from './pages/OrderManagement';
+import OrderShipping from './pages/OrderShipping';
 import './App.css';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <Switch>
             <Route path='/' exact component={ProfileManagement} />
             <Route path='/order' exact component={OrderManagement} />
+            <Route path='/shipping' exact component={OrderShipping} />
           </Switch>
         </Auth0ProviderWithHistory>
       </Router>
