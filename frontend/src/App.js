@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Auth0ProviderWithHistory from './Auth0Provider.js';
 import Sidebar from './components/Sidebar';
 import ProfileManagement from './pages/ProfileManagement';
+import OrderManagement from './pages/OrderManagement';
 import './App.css';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           <Sidebar /> 
           <Switch>
             <Route path='/' exact component={ProfileManagement} />
+            <Route path='/order' exact component={OrderManagement} />
           </Switch>
         </Auth0ProviderWithHistory>
       </Router>
