@@ -4,16 +4,19 @@ import Progress from './Progress';
 import axios from 'axios';
 
 const FileUpload = (props) => {
-  const [file, setFile] = useState('');
-  const [filename, setFilename] = useState('Choose File');
-  const [uploadedFile, setUploadedFile] = useState({});
-  const [message, setMessage] = useState('');
-  const [uploadPercentage, setUploadPercentage] = useState(0);
+    const [file, setFile] = useState('');
+    const [filename, setFilename] = useState('Choose File');
+    const [uploadedFile, setUploadedFile] = useState({});
+    const [message, setMessage] = useState('');
+    const [uploadPercentage, setUploadPercentage] = useState(0);
 
-  const onChange = e => {
-    setFile(e.target.files[0]);
-    setFilename(e.target.files[0].name);
-  };
+    const onChange = e => {
+        if (e.target.files[0] !== undefined) {
+            console.log(e.target.files[0]);
+            setFile(e.target.files[0]);
+            setFilename(e.target.files[0].name);
+        }
+    };
 
   const onSubmit = async e => {
     e.preventDefault();
@@ -21,35 +24,27 @@ const FileUpload = (props) => {
     formData.append('uploaded_file', file);
 
     try {
-      const res = await axios.post(`http://${process.env.REACT_APP_BACKEND_URL}/text-from-image`, formData, {
-        headers: {
-            Authorization: `Bearer ${props.token}`,
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'multipart/form-data'
-        },
-        onUploadProgress: progressEvent => {
-          setUploadPercentage(
-            parseInt(
-              Math.round((progressEvent.loaded * 100) / progressEvent.total)
-            )
-          );
-
-          // Clear percentage
-          setTimeout(() => setUploadPercentage(0), 10000);
-        }
-      });
-
-      const { fileName, filePath } = res.data;
-
-      setUploadedFile({ fileName, filePath });
-
-      setMessage('File Uploaded');
+        const res = await axios.post(`http://${process.env.REACT_APP_BACKEND_URL}/text-from-image`, formData, {
+            headers: {
+                Authorization: `Bearer ${props.token}`,
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'multipart/form-data'
+            },
+            onUploadProgress: progressEvent => {
+                setUploadPercentage(parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total)));
+                setTimeout(() => setUploadPercentage(0), 10000);
+            }
+        });
+        console.log(res.data);
+        const { fileName, filePath } = res.data;
+        setUploadedFile({ fileName, filePath });
+        setMessage('File Uploaded');
     } catch (err) {
-      if (err.response.status === 500) {
-        setMessage('There was a problem with the server');
-      } else {
-        setMessage(err.response.data.msg);
-      }
+        if (err.response.status === 500) {
+            setMessage('There was a problem with the server');
+        } else {
+            setMessage(err.response.data.msg);
+        }
     }
   };
 
