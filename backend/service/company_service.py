@@ -38,8 +38,9 @@ class CompanyService:
             {
             "order_number":x[0],
             "detail":x[1],
-            "customer_address":x[2],
-            "customer_phone_number":x[3],
-            "status":x[4]
+            "customer_name":x[2],
+            "customer_address":x[3],
+            "customer_phone_number":x[4],
+            "status":x[5]
             } for x in res.values.tolist()]
 

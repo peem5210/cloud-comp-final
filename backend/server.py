@@ -52,7 +52,8 @@ def send_sms_to_phone(dto: SmsDto,response: Response, user: Auth0User = Security
 async def create_upload_file(response: Response,uploaded_file: UploadFile = File(...), user: Auth0User = Security(auth.get_user)):
     text = {}
     if not uploaded_file.filename.endswith('.jpg') and not uploaded_file.filename.endswith('.png'):
-        return HTTPException(status_code=304, detail='Image type invalid')
+        response.status_code=409
+        return "Image type invalid"
     file_location = f"tmp_files/{uploaded_file.filename}"
     with open(file_location, "wb+") as file_object:
         file_object.write(uploaded_file.file.read())
