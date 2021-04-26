@@ -5,6 +5,7 @@ import os
 
 class AWSConnector:
     def __init__(self):
+        print("Connected to AWS")
         load_dotenv()
 
     def init_session(self):
