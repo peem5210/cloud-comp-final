@@ -16,7 +16,7 @@ class AwsService:
 
     def text_from_image_path(self,vendor,path_to_file=''):
         if vendor == 'JT':
-            begins_with = ''
+            begins_with = tuple([str(x) for x in range(10)])
             num = 12
         else:
             begins_with = 'TH'
