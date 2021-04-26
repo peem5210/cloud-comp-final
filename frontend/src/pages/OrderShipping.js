@@ -95,6 +95,13 @@ function OrderShipping() {
             <div className='container mt-4'>
                 <FileUpload token={token} />
             </div>
+            {data.uploadedFile ? (
+                <div className='component-container'>
+                    <div className='picture-container'>
+                        <img style={{ width: '60%' }} src={data.s3Url} alt='' />
+                    </div>
+                </div>
+            ) : null}
             <div className='component-container'>
                 <ShippingTable />
             </div>

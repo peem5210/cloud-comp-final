@@ -9,12 +9,14 @@
     justify-content: center;
 }
 
-.message-container {
-    width: 100%;
+.picture-container {
+    width: 60%;
     display: flex;
     justify-content: center;
 }
 
-.selector {
-    z-index: 9997;
+.message-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }

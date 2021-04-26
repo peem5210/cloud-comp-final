@@ -10,11 +10,9 @@ import './FileUpload.css';
 const FileUpload = (props) => {
     const [file, setFile] = useState('');
     const [filename, setFilename] = useState('Choose File');
-    const [uploadedFile, setUploadedFile] = useState(false);
     const [message, setMessage] = useState('');
     const [uploadPercentage, setUploadPercentage] = useState(0);
     const [provider, setProvider] = useState('');
-    const [s3Url, setS3Url] = useState('');
     const data = useContext(DataContext);
 
     const onChange = e => {
@@ -48,8 +46,8 @@ const FileUpload = (props) => {
           });
           data.setParcelList(res.data.words);
           console.log(res.data);
-          setS3Url(res.data.image_url);
-          setUploadedFile(true);
+          data.setS3Url(res.data.image_url);
+          data.setUploadedFile(true);
           setMessage('File Uploaded');
       } catch (err) {
           if (err.response.status === 500) {
@@ -107,13 +105,6 @@ const FileUpload = (props) => {
         />
       </form>
       <br></br>
-      {uploadedFile ? (
-        <div className='component-container'>
-          <div className='picture-container'>
-            <img style={{ width: '60%' }} src={s3Url} alt='' />
-          </div>
-        </div>
-      ) : null}
     </Fragment>
   );
 };
