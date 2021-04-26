@@ -37,7 +37,7 @@ const FileUpload = (props) => {
               headers: {
                   Authorization: `Bearer ${props.token}`,
                   'Access-Control-Allow-Origin': '*',
-                  'Content-Type': 'multipart/form-data'
+                  'Content-Type': 'multipart/form-data',
               },
               onUploadProgress: progressEvent => {
                   setUploadPercentage(parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total)));
