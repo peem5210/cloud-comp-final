@@ -1,10 +1,10 @@
 export const ShippingOptions = [
     {
         label: 'JT Express',
-        value: 'jt'
+        value: 'JT'
     },
     {
         label: 'Flash Express',
-        value: 'flash'
+        value: 'FLASH'
     }
 ];
