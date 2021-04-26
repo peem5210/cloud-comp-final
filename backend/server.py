@@ -24,10 +24,8 @@ mysql_connector = MySQLConnector()
 aws_service = AwsService(aws_connector)
 company_service = CompanyService(aws_service,mysql_connector)
 
-
 auth = Auth0(domain=os.getenv('AUTH0_DOMAIN'), api_audience=os.getenv('AUTH0_AUDIENCE'), scopes={'read:test':''})
-print("AUTH0 Connected")
-
+print("Connected to AUTH0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -51,8 +49,8 @@ def send_sms_to_phone(dto: SmsDto,response: Response, user: Auth0User = Security
     aws_service.send_message(dto.phone_number, dto.message)
     return dto
 
-@app.post("/text-from-image")
-async def create_upload_file(response: Response,uploaded_file: UploadFile = File(...), user: Auth0User = Security(auth.get_user)):
+@app.post("/text-from-image/{vendor}")
+async def create_upload_file(vendor,response: Response,uploaded_file: UploadFile = File(...), user: Auth0User = Security(auth.get_user)):
     text = {}
     if not uploaded_file.filename.endswith('.jpg') and not uploaded_file.filename.endswith('.png'):
         response.status_code=409
@@ -60,7 +58,7 @@ async def create_upload_file(response: Response,uploaded_file: UploadFile = File
     file_location = f"tmp_files/{uploaded_file.filename}"
     with open(file_location, "wb+") as file_object:
         file_object.write(uploaded_file.file.read())
-    text = aws_service.text_from_image_path(path_to_file = f"tmp_files/{uploaded_file.filename}")
+    text = aws_service.text_from_image_path(vendor,path_to_file = f"tmp_files/{uploaded_file.filename}")
     return text
 
 @app.post("/company")

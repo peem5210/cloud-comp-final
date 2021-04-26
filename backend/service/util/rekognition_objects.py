@@ -12,7 +12,7 @@ viewer.
 import io
 import logging
 from PIL import Image, ImageDraw
-
+from fastapi.responses import FileResponse
 logger = logging.getLogger(__name__)
 
 
@@ -66,7 +66,7 @@ def save_polygons(image_bytes, polygons, color):
         draw.polygon([
             (image.width * point['X'], image.height * point['Y']) for point in polygon],
             outline=color)
-    image.show()
+    return image
 
 
 class RekognitionFace:
