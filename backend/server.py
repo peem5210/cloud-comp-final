@@ -24,7 +24,10 @@ mysql_connector = MySQLConnector()
 aws_service = AwsService(aws_connector)
 company_service = CompanyService(aws_service,mysql_connector)
 
+
 auth = Auth0(domain=os.getenv('AUTH0_DOMAIN'), api_audience=os.getenv('AUTH0_AUDIENCE'), scopes={'read:test':''})
+print("AUTH0 Connected")
+
 
 app.add_middleware(
     CORSMiddleware,

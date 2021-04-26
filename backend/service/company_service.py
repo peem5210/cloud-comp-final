@@ -7,6 +7,7 @@ class CreateCompanyDto(BaseModel):
 
 class CompanyService:
     def __init__(self,aws_service,mysql_connector):
+        print("Initialized Company service")
         self.aws_service = aws_service
         self.mysql_connector = mysql_connector
 
@@ -27,7 +28,7 @@ class CompanyService:
         res=self.mysql_connector.execute_query(
         '''SELECT COUNT(*) FROM company WHERE company_email='{}';
         '''.format(email))
-        return not res[0][0] > 0
+        return {'status': not res[0][0] > 0, 'email':email}
     
     def get_order_with_status(self,status):
         res=self.mysql_connector.read_query_to_df(

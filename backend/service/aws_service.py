@@ -5,6 +5,7 @@ from .util.rekognition_objects import (
 
 class AwsService:
     def __init__(self,aws_connector):
+        print("Initialized AWS service")
         self.sns_wrapper = aws_connector.connect_sns()
         self.rekognition_client = aws_connector.connect_rekognition()
 
@@ -16,4 +17,4 @@ class AwsService:
         book_image = RekognitionImage.from_file(book_file_name, self.rekognition_client)
         texts = book_image.detect_text()
         show_polygons(book_image.image['Bytes'], [text.geometry['Polygon'] for text in texts], 'aqua')
-        return texts
+        return [x.to_dict()['text'] for x in texts if x.to_dict()['kind']=='WORD']
