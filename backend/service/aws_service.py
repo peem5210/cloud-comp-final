@@ -38,4 +38,4 @@ class AwsService:
             bucket_name,
             key)
 
-        return {"words": [x.to_dict()['text'] for x in texts if x.to_dict()['kind']=='WORD' and len(x.to_dict()['text'])==num and x.to_dict()['text'].startswith(begins_with)], "image_url":object_url}
+        return {"words": [{"parcel_number": x.to_dict()['text'], "order_number":""} for x in texts if x.to_dict()['kind']=='WORD' and len(x.to_dict()['text'])==num and x.to_dict()['text'].startswith(begins_with)], "image_url":object_url}
