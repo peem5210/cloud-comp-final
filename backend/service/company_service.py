@@ -9,6 +9,10 @@ class UpdateCompanyDto(BaseModel):
     company_address: str
     company_phone_number: str
 
+class UpdateOrderDto(BaseModel):
+    order_number: str
+    status: str
+
 
 class CompanyService:
     def __init__(self,aws_service,mysql_connector):
@@ -21,6 +25,22 @@ class CompanyService:
             '''SELECT * FROM company WHERE company_email='{}'
             '''.format(user.email))
         return df.values.tolist()[0]
+    
+    def get_order(self,user):
+        df = self.mysql_connector.read_query_to_df(
+            '''SELECT * FROM customer_order co, company c WHERE c.company_id=co.company_id and c.company_email='{}'
+            '''.format(user.email))
+        if df.empty:
+            return []
+        return [
+            {
+            "order_number":x[0],
+            "detail":x[1],
+            "customer_name":x[2],
+            "customer_address":x[3],
+            "customer_phone_number":x[4],
+            "status":x[5]
+            } for x in df.values.tolist()]
 
     def insert_company(self,dto: CreateCompanyDto, user):
         self.mysql_connector.execute_query(
@@ -35,6 +55,20 @@ class CompanyService:
             VALUES ('{0}', '{1}', '{2}', '{3}') ON DUPLICATE KEY UPDATE company_name='{0}',company_address='{1}',company_phone_number='{2}';
             '''.format(dto.company_name, dto.company_address, dto.company_phone_number, user.email))
         return dto
+
+    def update_order(self,dto: UpdateOrderDto, user):
+        df = self.mysql_connector.read_query_to_df(
+            '''SELECT co.order_number, co.detail, co.customer_name, co.customer_address, co.customer_phone_number, co.status 
+            FROM company c , customer_order co WHERE c.company_id=co.company_id and c.company_email='{}' and co.order_number ='{}';
+            '''.format(user.email,dto.order_number))
+        print(user.email, dto.order_number, df)
+        if (not df.empty):
+            self.mysql_connector.execute_query(
+                '''INSERT INTO customer_order (order_number) VALUES ('{}') ON DUPLICATE KEY UPDATE status = '{}'
+                '''.format(dto.order_number, dto.status))
+            return dto
+        return False
+
     
     def company_email_avail(self, email):
         df=self.mysql_connector.read_query_to_df(
