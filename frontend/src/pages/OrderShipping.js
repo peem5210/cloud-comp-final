@@ -4,7 +4,7 @@ import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import { DataContext } from '../components/DataContext';
 import FileUpload from '../components/FileUpload';
 import ShippingTable from '../components/ShippingTable';
-import PaidTable from '../components/PaidTable';
+import OrderTable from '../components/OrderTable';
 import Loading from '../components/Loading';
 import Message from '../components/Message';
 import './OrderShipping.css';
@@ -114,7 +114,7 @@ function OrderShipping() {
             {message ? <Message msg={message} /> : null}
             </div>
             <div className='component-container'>
-                <PaidTable rows={paidOrder} />
+                <OrderTable rows={paidOrder} />
             </div>
             <br></br>
         </div>
