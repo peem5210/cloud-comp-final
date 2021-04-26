@@ -1,9 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useContext } from 'react';
 import axios from 'axios';
 import Select from 'react-select';
 import Message from './Message';
 import Progress from './Progress';
 import { ShippingOptions } from './ShippingOptions';
+import { DataContext } from './DataContext';
 import './FileUpload.css';
 
 const FileUpload = (props) => {
@@ -14,10 +15,10 @@ const FileUpload = (props) => {
     const [uploadPercentage, setUploadPercentage] = useState(0);
     const [provider, setProvider] = useState('');
     const [s3Url, setS3Url] = useState('');
+    const data = useContext(DataContext);
 
     const onChange = e => {
         if (e.target.files[0] !== undefined) {
-            console.log(e.target.files[0]);
             setFile(e.target.files[0]);
             setFilename(e.target.files[0].name);
         }
@@ -45,6 +46,7 @@ const FileUpload = (props) => {
                   setTimeout(() => setUploadPercentage(0), 10000);
               }
           });
+          data.setParcelList(res.data.words);
           setS3Url(res.data.image_url);
           setUploadedFile(true);
           setMessage('File Uploaded');
@@ -105,8 +107,10 @@ const FileUpload = (props) => {
       </form>
       <br></br>
       {uploadedFile ? (
-        <div className='picture-container'>
-          <img style={{ width: '60%' }} src={s3Url} alt='' />
+        <div className='component-container'>
+          <div className='picture-container'>
+            <img style={{ width: '60%' }} src={s3Url} alt='' />
+          </div>
         </div>
       ) : null}
     </Fragment>

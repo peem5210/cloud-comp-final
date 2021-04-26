@@ -1,4 +1,10 @@
+.component-container {
+    display: flex;
+    justify-content: center;
+}
+
 .picture-container {
+    width: 60%;
     display: flex;
     justify-content: center;
 }

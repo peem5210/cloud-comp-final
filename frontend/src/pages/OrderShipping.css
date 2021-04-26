@@ -1,3 +1,9 @@
+.file-upload-container {
+    width: 600px;
+    display: flex;
+    justify-content: center;
+}
+
 .component-container {
     display: flex;
     justify-content: center;
