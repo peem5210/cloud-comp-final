@@ -89,41 +89,44 @@ function ProfileManagement() {
     };
 
     return (
-        <div className="container mt-4">
-            <br></br>
-            <h1 className='header'>Profile Management</h1>
-            <br></br>
-            <div className='logo-container'>
-                <img style={{ width: '50%' }} src={logo} alt='' />
+        <>
+            <div>
+                <br></br>
+                <h1 className='header'>Profile Management</h1>
             </div>
-            <br></br>
-            {message ? <Message msg={message} /> : null}
-            <form onSubmit={onSubmit}>
-                <div className='form-group'>
-                    <label>Shop Name</label>
-                    <input type="text" className="form-control" onChange={e => setShopName(e.target.value)} placeholder="Enter name"></input>
+            <div className="container mt-4">
+                <div className='logo-container'>
+                    <img style={{ width: '50%' }} src={logo} alt='' />
                 </div>
-                <div className='form-group'>
-                    <label>Shop Address</label>
-                    <input type="text" className="form-control" onChange={e => setShopAddress(e.target.value)} placeholder="Enter address"></input>
-                </div>
-                <div className='form-group'>
-                    <label>Shop Phone Number</label>
-                    <input type="text" className="form-control" onChange={e => setShopPhoneNumber(e.target.value)} placeholder="Enter phone number"></input>
-                </div>
-                <div className='form-group'>
-                    <label>Shop Email</label>
-                    <input type="text" className="form-control" value={shopEmail} disabled={true}></input>
-                </div>
-                <button type="submit" className="btn btn-primary" >
-                    {buttonName}
-                </button>
-            </form>
-            <br></br>
-            <br></br>
-        </div>
+                <br></br>
+                {message ? <Message msg={message} /> : null}
+                <form onSubmit={onSubmit}>
+                    <div className='form-group'>
+                        <label>Shop Name</label>
+                        <input type="text" className="form-control" onChange={e => setShopName(e.target.value)} placeholder="Enter name"></input>
+                    </div>
+                    <div className='form-group'>
+                        <label>Shop Address</label>
+                        <input type="text" className="form-control" onChange={e => setShopAddress(e.target.value)} placeholder="Enter address"></input>
+                    </div>
+                    <div className='form-group'>
+                        <label>Shop Phone Number</label>
+                        <input type="text" className="form-control" onChange={e => setShopPhoneNumber(e.target.value)} placeholder="Enter phone number"></input>
+                    </div>
+                    <div className='form-group'>
+                        <label>Shop Email</label>
+                        <input type="text" className="form-control" value={shopEmail} disabled={true}></input>
+                    </div>
+                    <button type="submit" className="btn btn-primary" >
+                        {buttonName}
+                    </button>
+                </form>
+                <br></br>
+                <br></br>
+            </div>
+        </>
     )
-}
+};
 
 export default withAuthenticationRequired(ProfileManagement, {
     onRedirecting: () => <Loading page='profile' />
