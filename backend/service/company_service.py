@@ -37,10 +37,13 @@ class CompanyService:
         return dto
     
     def company_email_avail(self, email):
-        res=self.mysql_connector.execute_query(
-        '''SELECT COUNT(*) FROM company WHERE company_email='{}';
+        df=self.mysql_connector.read_query_to_df(
+        '''SELECT * FROM company WHERE company_email='{}';
         '''.format(email))
-        return {'status': not res[0][0] > 0, 'email':email}
+        if df.empty:
+            return {'status':  True, 'email':email, 'company_name': '', 'company_address': '' , 'company_phone_number': ''}
+        res = df.values.tolist()
+        return {'status': False, 'email':email, 'company_name': res[0][1], 'company_address': res[0][2], 'company_phone_number':res[0][3] }
     
     def get_order_with_status(self,status):
         res=self.mysql_connector.read_query_to_df(
