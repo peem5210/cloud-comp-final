@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from typing import Optional
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from fastapi import Response,status,Depends, Security
+from fastapi import Response,status,Depends, Security,Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -12,7 +12,7 @@ from pydantic import BaseModel
 
 from service.util.aws_connector import AWSConnector
 from service.util.mysql_connector import MySQLConnector
-from service.company_service import CompanyService, CreateCompanyDto
+from service.company_service import CompanyService, CreateCompanyDto, UpdateCompanyDto
 from service.aws_service import AwsService
 load_dotenv()
 
@@ -52,7 +52,7 @@ def send_sms_to_phone(dto: SmsDto,response: Response, user: Auth0User = Security
 @app.post("/text-from-image/{vendor}")
 async def create_upload_file(vendor,response: Response,uploaded_file: UploadFile = File(...), user: Auth0User = Security(auth.get_user)):
     text = {}
-    if not uploaded_file.filename.endswith('.jpg') and not uploaded_file.filename.endswith('.png'):
+    if not uploaded_file.filename.lower().endswith(('.jpg','.png','jpeg')):
         response.status_code=409
         return "Image type invalid"
     file_location = f"tmp_files/{uploaded_file.filename}"
@@ -93,7 +93,21 @@ def create_company(email,response: Response, user: Auth0User = Security(auth.get
         response.status_code=409
         return str(e)
 
+@app.patch("/company")
+def create_company(dto:UpdateCompanyDto,response: Response, user: Auth0User = Security(auth.get_user)):
+    try:
+        return company_service.update_company(dto, user)
+    except Exception as e:
+        response.status_code=409
+        return str(e)
 
+
+class NotificationDto(BaseModel):
+    words: list=[]
+
+@app.post("/notification")
+def create_company(dto:NotificationDto,request: Request, user: Auth0User = Security(auth.get_user)):
+    return company_service.send_notification(dto, user.email)
 
 
 

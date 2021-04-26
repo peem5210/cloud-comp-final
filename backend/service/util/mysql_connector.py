@@ -30,7 +30,11 @@ class MySQLConnector:
     def execute_query(self,query):
         cur=self.connection.cursor()
         cur.execute(query)
-        row = cur.fetchall()
+        try:
+            row = cur.fetchall()
+        except Exception as e:
+            row = ''
+            pass
         self.connection.commit()
         cur.close()
         return row

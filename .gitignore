@@ -134,3 +134,4 @@ dmypy.json
 backend/.DS_Store
 backend/response.png
 backend/tmp_files/S__39616564.jpg
+*tmp_files
