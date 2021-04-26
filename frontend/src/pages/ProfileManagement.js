@@ -46,6 +46,9 @@ function ProfileManagement() {
                     'Access-Control-Allow-Origin': '*',
                 },
             });
+            setShopName(res.data.company_name)
+            setShopAddress(res.data.company_address)
+            setShopPhoneNumber(res.data.company_phone_number)
             setShopEmail(res.data.email)
             if (res.data.status) {
                 setMessage('Please create shop before using Ordersist!')
@@ -103,15 +106,15 @@ function ProfileManagement() {
                 <form onSubmit={onSubmit}>
                     <div className='form-group'>
                         <label>Shop Name</label>
-                        <input type="text" className="form-control" onChange={e => setShopName(e.target.value)} placeholder="Enter shop name"></input>
+                        <input type="text" className="form-control" onChange={e => setShopName(e.target.value)} value={shopName} placeholder="Enter shop name"></input>
                     </div>
                     <div className='form-group'>
                         <label>Shop Phone Number</label>
-                        <input type="text" className="form-control" onChange={e => setShopPhoneNumber(e.target.value)} placeholder="Enter shop phone number"></input>
+                        <input type="text" className="form-control" onChange={e => setShopPhoneNumber(e.target.value)} value={shopPhoneNumber} placeholder="Enter shop phone number"></input>
                     </div>
                     <div className='form-group'>
                         <label>Shop Address</label>
-                        <input type="text" className="form-control" onChange={e => setShopAddress(e.target.value)} placeholder="Enter shop address"></input>
+                        <input type="text" className="form-control" onChange={e => setShopAddress(e.target.value)} value={shopAddress} placeholder="Enter shop address"></input>
                     </div>
                     <div className='form-group'>
                         <label>Shop Email</label>
