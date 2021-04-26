@@ -34,10 +34,10 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const createData = (name, carbs) => ({
-    id: name.replace(" ", "_"),
-    name,
-    carbs,
+const createData = (parcel_number, order_number) => ({
+    id: parcel_number.replace(" ", "_"),
+    parcel_number,
+    order_number,
     isEditMode: false
 });
 
@@ -60,11 +60,10 @@ const CustomTableCell = ({ row, name, onChange }) => {
     );
 };
 
-function TableTest() {
+function ShippingTable() {
     const [rows, setRows] = React.useState([
-        createData("Frozen yoghurt", 24),
-        createData("Ice cream sandwich", 37),
-        createData("Eclair", 24)
+        createData('820877357844', ''),
+        createData("820877373212", ''),
     ]);
     const [previous, setPrevious] = React.useState({});
     const classes = useStyles();
@@ -117,8 +116,8 @@ function TableTest() {
                 <TableHead>
                 <TableRow>
                     <TableCell align="left" />
-                    <TableCell align="left">Dessert (100g serving)</TableCell>
-                    <TableCell align="left">Carbs&nbsp;(g)</TableCell>
+                    <TableCell align="left">Parcel Number</TableCell>
+                    <TableCell align="left">Order Number</TableCell>
                 </TableRow>
                 </TableHead>
                 <TableBody>
@@ -142,8 +141,8 @@ function TableTest() {
                             </>
                         )}
                     </TableCell>
-                    <CustomTableCell {...{ row, name: "name", onChange }} />
-                    <CustomTableCell {...{ row, name: "carbs", onChange }} />
+                    <CustomTableCell {...{ row, name: "parcel_number", onChange }} />
+                    <CustomTableCell {...{ row, name: "order_number", onChange }} />
                     </TableRow>
                 ))}
                 </TableBody>
@@ -152,4 +151,4 @@ function TableTest() {
     );
 }
 
-export default TableTest;
+export default ShippingTable;

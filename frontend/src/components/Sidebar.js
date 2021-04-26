@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import * as FAIcons from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { SidebarData } from './SidebarData';
-import './Sidebar.css';
 import { IconContext } from 'react-icons';
+import LogoutButton from './LogoutButton';
+import './Sidebar.css';
 
 function Sidebar() {
     const [sidebar, setSidebar] = useState(false)
@@ -15,7 +16,8 @@ function Sidebar() {
             <div className="sidebar">
                 <Link to="#" className='menu-bar'>
                     <FAIcons.FaBars onClick={showSidebar} />
-                </Link>    
+                </Link> 
+                <LogoutButton />  
             </div>
             <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
                 <ul className='nav-menu-items' onClick={showSidebar}>

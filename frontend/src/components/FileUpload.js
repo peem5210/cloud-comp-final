@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 import Message from './Message';
 import Progress from './Progress';
 import axios from 'axios';
+import './FileUpload.css';
 
 const FileUpload = (props) => {
     const [file, setFile] = useState('');
@@ -23,29 +24,31 @@ const FileUpload = (props) => {
     const formData = new FormData();
     formData.append('uploaded_file', file);
 
-    try {
-        const res = await axios.post(`http://${process.env.REACT_APP_BACKEND_URL}/text-from-image`, formData, {
-            headers: {
-                Authorization: `Bearer ${props.token}`,
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'multipart/form-data'
-            },
-            onUploadProgress: progressEvent => {
-                setUploadPercentage(parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total)));
-                setTimeout(() => setUploadPercentage(0), 10000);
-            }
-        });
-        console.log(res.data);
-        // const { fileName, filePath } = res.data;
-        // setUploadedFile({ fileName, filePath });
-        setUploadedFile(true);
-        setMessage('File Uploaded');
-    } catch (err) {
-        if (err.response.status === 500) {
-            setMessage('There was a problem with the server');
-        } else {
-            setMessage(err.response.data.msg);
-        }
+    if (file == '') {
+      setMessage('No File Seleted');
+    } else {
+      try {
+          const res = await axios.post(`http://${process.env.REACT_APP_BACKEND_URL}/text-from-image`, formData, {
+              headers: {
+                  Authorization: `Bearer ${props.token}`,
+                  'Access-Control-Allow-Origin': '*',
+                  'Content-Type': 'multipart/form-data'
+              },
+              onUploadProgress: progressEvent => {
+                  setUploadPercentage(parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total)));
+                  setTimeout(() => setUploadPercentage(0), 10000);
+              }
+          });
+          console.log(res.data);
+          setUploadedFile(true);
+          setMessage('File Uploaded');
+      } catch (err) {
+          if (err.response.status === 500) {
+              setMessage('There was a problem with the server');
+          } else {
+              setMessage(err.response.data.msg);
+          }
+      }
     }
   };
 
@@ -73,11 +76,10 @@ const FileUpload = (props) => {
           className='btn btn-primary btn-block mt-4'
         />
       </form>
+      <br></br>
       {uploadedFile ? (
-        <div className='row mt-5'>
-          <div className='col-md-6 m-auto'>
-            <img style={{ width: '100%' }} src={URL.createObjectURL(file)} alt='' />
-          </div>
+        <div className='picture-container'>
+          <img style={{ width: '60%' }} src={URL.createObjectURL(file)} alt='' />
         </div>
       ) : null}
     </Fragment>

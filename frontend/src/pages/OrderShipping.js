@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import FileUpload from '../components/FileUpload';
-import TableTest from '../components/TableTest';
+import ShippingTable from '../components/ShippingTable';
 import Loading from '../components/Loading';
 import './OrderShipping.css';
 
@@ -36,7 +36,7 @@ function Ordershipping() {
                 <FileUpload token={token}/>
             </div>
             <div className='table-container'>
-                <TableTest />
+                <ShippingTable />
             </div>
             <br></br>
             <br></br>
