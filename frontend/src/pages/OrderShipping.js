@@ -3,7 +3,7 @@ import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import FileUpload from '../components/FileUpload';
 import TableTest from '../components/TableTest';
 import Loading from '../components/Loading';
-import './ProfileManagement.css';
+import './OrderShipping.css';
 
 function Ordershipping() {
     const { isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -30,14 +30,16 @@ function Ordershipping() {
 
     return (
         <div>
+            <br></br>
             <h1 className='header'>Order Shipping</h1>
             <div className='container mt-4'>
-                <h4 className='display-4 text-center mb-4'>
-                    <i className='fab fa-react' /> React File Upload
-                </h4>
                 <FileUpload token={token}/>
             </div>
-            <TableTest />
+            <div className='table-container'>
+                <TableTest />
+            </div>
+            <br></br>
+            <br></br>
         </div>
     )
 }
