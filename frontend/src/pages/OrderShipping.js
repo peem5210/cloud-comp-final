@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import FileUpload from '../components/FileUpload';
+import TableTest from '../components/TableTest';
 import Loading from '../components/Loading';
 import './ProfileManagement.css';
 
@@ -36,6 +37,7 @@ function Ordershipping() {
                 </h4>
                 <FileUpload token={token}/>
             </div>
+            <TableTest />
         </div>
     )
 }
