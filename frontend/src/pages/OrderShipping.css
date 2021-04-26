@@ -1,4 +1,8 @@
-.table-container {
+.component-container {
     display: flex;
     justify-content: center;
+}
+
+.selector {
+    z-index: 9997;
 }

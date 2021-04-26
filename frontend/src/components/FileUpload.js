@@ -1,7 +1,9 @@
 import React, { Fragment, useState } from 'react';
+import axios from 'axios';
+import Select from 'react-select';
 import Message from './Message';
 import Progress from './Progress';
-import axios from 'axios';
+import { ShippingOptions } from './ShippingOptions';
 import './FileUpload.css';
 
 const FileUpload = (props) => {
@@ -10,6 +12,7 @@ const FileUpload = (props) => {
     const [uploadedFile, setUploadedFile] = useState(false);
     const [message, setMessage] = useState('');
     const [uploadPercentage, setUploadPercentage] = useState(0);
+    const [provider, setProvider] = useState('');
 
     const onChange = e => {
         if (e.target.files[0] !== undefined) {
@@ -24,8 +27,10 @@ const FileUpload = (props) => {
     const formData = new FormData();
     formData.append('uploaded_file', file);
 
-    if (file == '') {
-      setMessage('No File Seleted');
+    if (file === '') {
+      setMessage('Please Select Image');
+    } else if (provider === '') {
+      setMessage('Please Select Provider');
     } else {
       try {
           const res = await axios.post(`http://${process.env.REACT_APP_BACKEND_URL}/text-from-image`, formData, {
@@ -52,9 +57,30 @@ const FileUpload = (props) => {
     }
   };
 
+  const onSelectProvider = (selectedItem) => {
+    if (selectedItem !== null) {
+        setProvider(selectedItem.value);
+    } else {
+        setProvider('');
+    }
+  };
+
   return (
     <Fragment>
       {message ? <Message msg={message} /> : null}
+      <div className='selector'>
+          <Select
+              className="basic-single"
+              classNamePrefix="select"
+              isClearable={true}
+              isSearchable={true}
+              options={ShippingOptions}
+              placeholder="Select Shipping Provider"
+              isMulti={false}
+              onChange={onSelectProvider}
+          />
+      </div>
+      <br></br>
       <form onSubmit={onSubmit}>
         <div className='custom-file mb-4'>
           <input

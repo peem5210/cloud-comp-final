@@ -33,12 +33,15 @@ function Ordershipping() {
             <br></br>
             <h1 className='header'>Order Shipping</h1>
             <div className='container mt-4'>
-                <FileUpload token={token}/>
+                <FileUpload token={token} />
             </div>
-            <div className='table-container'>
+            <div className='component-container'>
                 <ShippingTable />
             </div>
             <br></br>
+            <div className='component-container'>
+                <button onClick={console.log('clicked')} className="btn btn-primary" >Send Message</button>
+            </div>
             <br></br>
         </div>
     )
