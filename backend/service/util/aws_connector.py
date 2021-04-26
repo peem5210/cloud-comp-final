@@ -7,6 +7,7 @@ class AWSConnector:
     def __init__(self):
         print("Connected to AWS")
         load_dotenv()
+        self.session = self.init_session()
 
     def init_session(self):
         return boto3.Session(
@@ -19,6 +20,7 @@ class AWSConnector:
         return SnsWrapper()
     
     def connect_rekognition(self):
-        return self.init_session().client('rekognition', region_name='us-west-2')
+        return self.session.client('rekognition', region_name='us-west-2')
 
-
+    def connect_s3(self):
+        return self.session.resource('s3'), self.session.client('s3')
