@@ -13,6 +13,7 @@ const FileUpload = (props) => {
     const [message, setMessage] = useState('');
     const [uploadPercentage, setUploadPercentage] = useState(0);
     const [provider, setProvider] = useState('');
+    const [s3Url, setS3Url] = useState('');
 
     const onChange = e => {
         if (e.target.files[0] !== undefined) {
@@ -33,7 +34,7 @@ const FileUpload = (props) => {
       setMessage('Please Select Provider');
     } else {
       try {
-          const res = await axios.post(`http://${process.env.REACT_APP_BACKEND_URL}/text-from-image`, formData, {
+          const res = await axios.post(`http://${process.env.REACT_APP_BACKEND_URL}/text-from-image/${provider}`, formData, {
               headers: {
                   Authorization: `Bearer ${props.token}`,
                   'Access-Control-Allow-Origin': '*',
@@ -44,7 +45,7 @@ const FileUpload = (props) => {
                   setTimeout(() => setUploadPercentage(0), 10000);
               }
           });
-          console.log(res.data);
+          setS3Url(res.data.image_url);
           setUploadedFile(true);
           setMessage('File Uploaded');
       } catch (err) {
@@ -105,7 +106,7 @@ const FileUpload = (props) => {
       <br></br>
       {uploadedFile ? (
         <div className='picture-container'>
-          <img style={{ width: '60%' }} src={URL.createObjectURL(file)} alt='' />
+          <img style={{ width: '60%' }} src={s3Url} alt='' />
         </div>
       ) : null}
     </Fragment>

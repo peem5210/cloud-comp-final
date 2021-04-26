@@ -1,13 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Input from "@material-ui/core/Input";
-import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
+import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Input, IconButton } from '@material-ui/core';
 import EditIcon from "@material-ui/icons/EditOutlined";
 import DoneIcon from "@material-ui/icons/DoneAllTwoTone";
 import RevertIcon from "@material-ui/icons/NotInterestedOutlined";
@@ -34,13 +27,6 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const createData = (parcel_number, order_number) => ({
-    id: parcel_number.replace(" ", "_"),
-    parcel_number,
-    order_number,
-    isEditMode: false
-});
-
 const CustomTableCell = ({ row, name, onChange }) => {
     const classes = useStyles();
     const { isEditMode } = row;
@@ -61,11 +47,14 @@ const CustomTableCell = ({ row, name, onChange }) => {
 };
 
 function ShippingTable() {
-    const [rows, setRows] = React.useState([
-        createData('820877357844', ''),
-        createData("820877373212", ''),
-    ]);
-    const [previous, setPrevious] = React.useState({});
+    const [rows, setRows] = useState([{
+        parcel_number: '820877357844',
+        order_number: ''
+    }, {
+        parcel_number: '820877373212',
+        order_number: ''
+    }]);
+    const [previous, setPrevious] = useState({});
     const classes = useStyles();
 
     const onToggleEditMode = id => {
@@ -122,7 +111,7 @@ function ShippingTable() {
                 </TableHead>
                 <TableBody>
                 {rows.map(row => (
-                    <TableRow key={row.id}>
+                    <TableRow key={row.parcel_number}>
                     <TableCell className={classes.selectTableCell}>
                         {row.isEditMode ? (
                             <>
