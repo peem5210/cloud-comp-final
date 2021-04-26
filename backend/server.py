@@ -85,10 +85,10 @@ def order_by_status(status, response: Response, user: Auth0User = Security(auth.
         response.status_code=409
         return str(e)
 
-@app.get("/avail-company-email/{email}")
-def create_company(email,response: Response, user: Auth0User = Security(auth.get_user)):
+@app.get("/avail-company-email")
+def create_company(response: Response, user: Auth0User = Security(auth.get_user)):
     try:
-        return company_service.company_email_avail(email)
+        return company_service.company_email_avail(user.email)
     except Exception as e:
         response.status_code=409
         return str(e)
