@@ -61,13 +61,12 @@ class CompanyService:
             '''SELECT co.order_number, co.detail, co.customer_name, co.customer_address, co.customer_phone_number, co.status 
             FROM company c , customer_order co WHERE c.company_id=co.company_id and c.company_email='{}' and co.order_number ='{}';
             '''.format(user.email,dto.order_number))
-        print(user.email, dto.order_number, df)
         if (not df.empty):
             self.mysql_connector.execute_query(
                 '''INSERT INTO customer_order (order_number) VALUES ('{}') ON DUPLICATE KEY UPDATE status = '{}'
                 '''.format(dto.order_number, dto.status))
             return dto
-        return False
+        return 'Cannot update , order_number does not match with company'
 
     
     def company_email_avail(self, email):
