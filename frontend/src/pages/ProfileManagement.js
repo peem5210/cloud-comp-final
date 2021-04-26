@@ -88,7 +88,7 @@ function ProfileManagement() {
         getStatus();
     };
 
-    return (
+    return (isAuthenticated && (
         <>
             <div>
                 <br></br>
@@ -103,15 +103,15 @@ function ProfileManagement() {
                 <form onSubmit={onSubmit}>
                     <div className='form-group'>
                         <label>Shop Name</label>
-                        <input type="text" className="form-control" onChange={e => setShopName(e.target.value)} placeholder="Enter name"></input>
-                    </div>
-                    <div className='form-group'>
-                        <label>Shop Address</label>
-                        <input type="text" className="form-control" onChange={e => setShopAddress(e.target.value)} placeholder="Enter address"></input>
+                        <input type="text" className="form-control" onChange={e => setShopName(e.target.value)} placeholder="Enter shop name"></input>
                     </div>
                     <div className='form-group'>
                         <label>Shop Phone Number</label>
-                        <input type="text" className="form-control" onChange={e => setShopPhoneNumber(e.target.value)} placeholder="Enter phone number"></input>
+                        <input type="text" className="form-control" onChange={e => setShopPhoneNumber(e.target.value)} placeholder="Enter shop phone number"></input>
+                    </div>
+                    <div className='form-group'>
+                        <label>Shop Address</label>
+                        <input type="text" className="form-control" onChange={e => setShopAddress(e.target.value)} placeholder="Enter shop address"></input>
                     </div>
                     <div className='form-group'>
                         <label>Shop Email</label>
@@ -125,7 +125,7 @@ function ProfileManagement() {
                 <br></br>
             </div>
         </>
-    )
+    ));
 };
 
 export default withAuthenticationRequired(ProfileManagement, {

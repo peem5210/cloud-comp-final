@@ -5,11 +5,16 @@ import Select from 'react-select';
 import OrderTable from '../components/OrderTable';
 import { StatusOptions } from '../components/StatusOptions';
 import Loading from '../components/Loading';
+import logo from '../assets/narrow_logo.png';
 import './OrderManagement.css';
 
 function OrderManagement() {
     const { isAuthenticated, getAccessTokenSilently } = useAuth0();
     const [token, setToken] = useState('');
+    const [customerName, setCustomerName] = useState('');
+    const [customerPhoneNumber, setCustomerPhoneNumber] = useState('');
+    const [customerAddress, setCustomerAddress] = useState('');
+    const [orderDetail, setOrderDetail] = useState('');
     const [message, setMessage] = useState('');
     const [orderRow, setOrderRow] = useState([]);
 
@@ -58,10 +63,68 @@ function OrderManagement() {
         }
     };
 
+    const onSubmit = async e => {
+        e.preventDefault()
+        const payload = {
+            'detail': orderDetail,
+            'customer_name': customerName,
+            'customer_address': customerAddress,
+            'customer_phone_number': customerPhoneNumber,
+        }
+        console.log(payload);
+        /*
+        try {
+            const res = await axios.patch(`http://${process.env.REACT_APP_BACKEND_URL}/company`, payload, 
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Access-Control-Allow-Origin': '*',
+                },
+            });
+        } catch (err) {
+            if (err.response.status === 500) {
+                setMessage('There was a problem with the server');
+            } else {
+                setMessage(err.response.data.msg);
+            }
+        }
+        getStatus();
+        */
+    };
+
     return (isAuthenticated && (
-        <div>
-            <br></br>
-            <h1 className='header'>Order Management</h1>
+        <>
+            <div>
+                <br></br>
+                <h1 className='header'>Order Management</h1>
+            </div>
+            <div className="container mt-4">
+                <div className='logo-container'>
+                    <img style={{ width: '50%' }} src={logo} alt='' />
+                </div>
+                <br></br>
+                <form onSubmit={onSubmit}>
+                    <div className='form-group'>
+                        <label>Customer Name</label>
+                        <input type="text" className="form-control" onChange={e => setCustomerName(e.target.value)} placeholder="Enter customer name"></input>
+                    </div>
+                    <div className='form-group'>
+                        <label>Customer Phone Number</label>
+                        <input type="text" className="form-control" onChange={e => setCustomerPhoneNumber(e.target.value)} placeholder="Enter customer phone number"></input>
+                    </div>
+                    <div className='form-group'>
+                        <label>Customer Address</label>
+                        <input type="text" className="form-control" onChange={e => setCustomerAddress(e.target.value)} placeholder="Enter customer address"></input>
+                    </div>
+                    <div className='form-group'>
+                        <label>Order Detail</label>
+                        <input type="text" className="form-control" onChange={e => setOrderDetail(e.target.value)} placeholder="Enter order detail"></input>
+                    </div>
+                    <button type="submit" className="btn btn-primary" >
+                        Create Order
+                    </button>
+                </form>
+            </div>
             <br></br>
             <div className='component-container'>
                 <div className='selector'>
@@ -83,7 +146,7 @@ function OrderManagement() {
             </div>
             <br></br>
             <br></br>
-        </div>
+        </>
     ));
 };
 

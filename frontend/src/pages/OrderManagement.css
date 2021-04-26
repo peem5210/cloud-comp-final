@@ -16,3 +16,8 @@
     width: 400px;
     z-index: 9997;
 }
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+}

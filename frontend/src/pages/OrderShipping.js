@@ -88,7 +88,7 @@ function OrderShipping() {
         getPaidOrder();
     }
 
-    return (
+    return (isAuthenticated && (
         <div>
             <br></br>
             <h1 className='header'>Order Shipping</h1>
@@ -118,7 +118,7 @@ function OrderShipping() {
             </div>
             <br></br>
         </div>
-    )
+    ));
 }
 
 export default withAuthenticationRequired(OrderShipping, {
