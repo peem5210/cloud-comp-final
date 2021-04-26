@@ -8,7 +8,7 @@ const columns = [
     { id: 'customer_name', label: 'Name', minWidth: 200 },
     { id: 'customer_address', label: 'Address', minWidth: 300 },
     { id: 'customer_phone_number', label: 'Phone Number', minWidth: 150 },
-    { id: 'status', label: 'Status', minWidth: 100 },
+    { id: 'status', label: 'Status', minWidth: 125 },
 ];
 
 const useStyles = makeStyles({
@@ -26,7 +26,7 @@ const useStyles = makeStyles({
     },
 });
 
-const PaidTable = (props) => {
+const OrderTable = (props) => {
     const classes = useStyles();
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -88,4 +88,4 @@ const PaidTable = (props) => {
   );
 };
 
-export default PaidTable;
+export default OrderTable;

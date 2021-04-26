@@ -6,3 +6,13 @@
     display: flex;
     justify-content: center;
 }
+
+.component-container {
+    display: flex;
+    justify-content: center;
+}
+
+.selector {
+    width: 400px;
+    z-index: 9997;
+}
