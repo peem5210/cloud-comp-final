@@ -104,7 +104,7 @@ def create_company(dto:UpdateCompanyDto,response: Response, user: Auth0User = Se
 @app.patch("/order")
 def patch_order(dto:UpdateOrderDto,response: Response, user: Auth0User = Security(auth.get_user)):
     try:
-        company_service.update_order(dto, user)
+        return company_service.update_order(dto, user)
     except Exception as e:
         response.status_code=409
         return str(e)
