@@ -52,10 +52,10 @@ function ShippingTable(props) {
     const classes = useStyles();
     const data = useContext(DataContext);
 
-    const onToggleEditMode = id => {
+    const onToggleEditMode = parcel_number => {
         data.setParcelList(state => {
             return data.parcelList.map(row => {
-                if (row.id === id) {
+                if (row.parcel_number === parcel_number) {
                     return { ...row, isEditMode: !row.isEditMode };
                 }
                 return row;
@@ -64,14 +64,14 @@ function ShippingTable(props) {
     };
 
     const onChange = (e, row) => {
-        if (!previous[row.id]) {
-            setPrevious(state => ({ ...state, [row.id]: row }));
+        if (!previous[row.parcel_number]) {
+            setPrevious(state => ({ ...state, [row.parcel_number]: row }));
         }
         const value = e.target.value;
         const name = e.target.name;
-        const { id } = row;
+        const { parcel_number } = row;
         const newRows = data.parcelList.map(row => {
-            if (row.id === id) {
+            if (row.parcel_number === parcel_number) {
                 return { ...row, [name]: value };
             }
             return row;
@@ -79,19 +79,19 @@ function ShippingTable(props) {
         data.setParcelList(newRows);
     };
 
-    const onRevert = id => {
+    const onRevert = parcel_number => {
         const newRows = data.parcelList.map(row => {
-        if (row.id === id) {
-            return previous[id] ? previous[id] : row;
+        if (row.parcel_number === parcel_number) {
+            return previous[parcel_number] ? previous[parcel_number] : row;
         }
         return row;
         });
         data.setParcelList(newRows);
         setPrevious(state => {
-            delete state[id];
+            delete state[parcel_number];
             return state;
         });
-        onToggleEditMode(id);
+        onToggleEditMode(parcel_number);
     };
 
     return (
@@ -110,16 +110,16 @@ function ShippingTable(props) {
                         <TableCell className={classes.selectTableCell}>
                             {row.isEditMode ? (
                                 <>
-                                    <IconButton aria-label="done" onClick={() => onToggleEditMode(row.id)}>
+                                    <IconButton aria-label="done" onClick={() => onToggleEditMode(row.parcel_number)}>
                                         <DoneIcon />
                                     </IconButton>
-                                    <IconButton aria-label="revert" onClick={() => onRevert(row.id)}>
+                                    <IconButton aria-label="revert" onClick={() => onRevert(row.parcel_number)}>
                                         <RevertIcon />
                                     </IconButton>
                                 </>
                             ) : (
                                 <>
-                                    <IconButton aria-label="delete" onClick={() => onToggleEditMode(row.id)}>
+                                    <IconButton aria-label="delete" onClick={() => onToggleEditMode(row.parcel_number)}>
                                         <EditIcon />
                                     </IconButton>
                                 </>

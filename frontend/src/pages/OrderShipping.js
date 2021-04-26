@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
+import { DataContext } from '../components/DataContext';
 import FileUpload from '../components/FileUpload';
 import ShippingTable from '../components/ShippingTable';
 import PaidTable from '../components/PaidTable';
@@ -8,11 +9,12 @@ import Loading from '../components/Loading';
 import Message from '../components/Message';
 import './OrderShipping.css';
 
-function Ordershipping() {
+function OrderShipping() {
     const { isAuthenticated, getAccessTokenSilently } = useAuth0();
     const [token, setToken] = useState('');
     const [paidOrder, setPaidOrder] = useState([]);
     const [message, setMessage] = useState('');
+    const data = useContext(DataContext);
 
     useEffect(() => {
         const getToken = async () => {
@@ -30,28 +32,61 @@ function Ordershipping() {
     }, []);
 
     useEffect(() => {
-        const getPaidOrder = async () => {
-            try {
-                const res = await axios.get(`http://${process.env.REACT_APP_BACKEND_URL}/order/paid`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        'Access-Control-Allow-Origin': '*',
-                    },
-                });
-                setPaidOrder(res.data);
-            } catch (err) {
-                if (err.response.status === 500) {
-                    setMessage('There was a problem with the server');
-                } else {
-                    setMessage(err.response.data.msg);
-                }
-            }
-        };
         if (token !== '') {
             console.log(token);
             getPaidOrder();
         }
     }, [token]);
+
+    const getPaidOrder = async () => {
+        try {
+            const res = await axios.get(`http://${process.env.REACT_APP_BACKEND_URL}/order/paid`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Access-Control-Allow-Origin': '*',
+                },
+            });
+            setPaidOrder(res.data);
+        } catch (err) {
+            if (err.response.status === 500) {
+                setMessage('There was a problem with the server');
+            } else {
+                setMessage(err.response.data.msg);
+            }
+        }
+    };
+
+    const sendMessage = async () => {
+        const words = data.parcelList.map(function({parcel_number, order_number}){
+            return {parcel_number, order_number};
+        });
+        try {
+            const res = await axios.post(`http://${process.env.REACT_APP_BACKEND_URL}/notification`, 
+            {
+                words: words,
+            }, 
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Access-Control-Allow-Origin': '*',
+                },
+            });
+            console.log(res.data.failed.length);
+            if (res.data.failed.length > 0) {
+                console.log('failed');
+                setMessage(`Send Message Fail with ${res.data.failed.length} Errors!`);
+            } else {
+                setMessage('Send Message Success!');
+            }
+        } catch (err) {
+            if (err.response.status === 500) {
+                setMessage('There was a problem with the server');
+            } else {
+                setMessage(err.response.data.msg);
+            }
+        }
+        getPaidOrder();
+    }
 
     return (
         <div>
@@ -65,10 +100,12 @@ function Ordershipping() {
             </div>
             <br></br>
             <div className='component-container'>
-                <button onClick={() => console.log('clicked')} className="btn btn-primary" >Send Message</button>
+                <button onClick={() => sendMessage()} className="btn btn-primary" >Send Message</button>
             </div>
             <br></br>
+            <div className='message-container'>
             {message ? <Message msg={message} /> : null}
+            </div>
             <div className='component-container'>
                 <PaidTable rows={paidOrder} />
             </div>
@@ -77,6 +114,6 @@ function Ordershipping() {
     )
 }
 
-export default withAuthenticationRequired(Ordershipping, {
-    onRedirecting: () => <Loading page='home' />
+export default withAuthenticationRequired(OrderShipping, {
+    onRedirecting: () => <Loading page='shipping' />
 });

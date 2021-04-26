@@ -43,10 +43,11 @@ const FileUpload = (props) => {
               },
               onUploadProgress: progressEvent => {
                   setUploadPercentage(parseInt(Math.round((progressEvent.loaded * 100) / progressEvent.total)));
-                  setTimeout(() => setUploadPercentage(0), 10000);
+                  setTimeout(() => setUploadPercentage(0), 20000);
               }
           });
           data.setParcelList(res.data.words);
+          console.log(res.data);
           setS3Url(res.data.image_url);
           setUploadedFile(true);
           setMessage('File Uploaded');
