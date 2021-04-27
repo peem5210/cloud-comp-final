@@ -31,13 +31,6 @@ function OrderShipping() {
         getToken();
     }, []);
 
-    useEffect(() => {
-        if (token !== '') {
-            console.log(token);
-            getPaidOrder();
-        }
-    }, [token]);
-
     const getPaidOrder = async () => {
         try {
             const res = await axios.get(`http://${process.env.REACT_APP_BACKEND_URL}/order/paid`, {
@@ -71,9 +64,7 @@ function OrderShipping() {
                     'Access-Control-Allow-Origin': '*',
                 },
             });
-            console.log(res.data.failed.length);
             if (res.data.failed.length > 0) {
-                console.log('failed');
                 setMessage(`Send Message Fail with ${res.data.failed.length} Errors!`);
             } else {
                 setMessage('Send Message Success!');

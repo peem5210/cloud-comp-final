@@ -30,10 +30,8 @@ function ProfileManagement() {
         };
         getToken();
     }, []);
-
     useEffect(() => {
         if (token !== '') {
-            console.log(token);
             getStatus();
         }
     }, [token]);

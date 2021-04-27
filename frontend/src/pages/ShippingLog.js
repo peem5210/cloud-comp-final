@@ -8,6 +8,7 @@ import './ShippingLog.css';
 function ShippingLog() {
     const { isAuthenticated, getAccessTokenSilently } = useAuth0();
     const [token, setToken] = useState('');
+    const [logs, setLogs] = useState([]);
 
     useEffect(() => {
         const getToken = async () => {
@@ -25,8 +26,22 @@ function ShippingLog() {
     }, []);
 
     useEffect(() => {
+        const getShippingLog = async () => {
+            try {
+                const res = await axios.get(`http://${process.env.REACT_APP_BACKEND_URL}/shipping-log`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Access-Control-Allow-Origin': '*',
+                    },
+                });
+                setLogs(res.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
         if (token !== '') {
-            console.log(token);
+            getShippingLog();
         }
     }, [token]);
 
@@ -36,7 +51,7 @@ function ShippingLog() {
             <h1 className='header'>Shipping Log Observation</h1>
             <br></br>
             <div className='component-container'>
-                <LogTable rows={[]} />
+                <LogTable rows={logs} />
             </div>
         </>
     ));

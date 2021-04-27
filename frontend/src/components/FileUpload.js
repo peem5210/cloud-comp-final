@@ -45,7 +45,6 @@ const FileUpload = (props) => {
               }
           });
           data.setParcelList(res.data.words);
-          console.log(res.data);
           data.setS3Url(res.data.image_url);
           data.setUploadedFile(true);
           setMessage('File Uploaded');
