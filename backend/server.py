@@ -109,7 +109,7 @@ def patch_order(dto:UpdateOrderDto,response: Response, user: Auth0User = Securit
         response.status_code=409
         return str(e)
         
-@app.get("/order/all")
+@app.get("/order/ALL")
 def get_all_order_all(response: Response, user: Auth0User = Security(auth.get_user)):
     try:
         return company_service.get_order(user)
