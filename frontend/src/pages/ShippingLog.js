@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
+import LogTable from '../components/LogTable';
 import Loading from '../components/Loading';
 import './ShippingLog.css';
 
@@ -31,9 +32,11 @@ function ShippingLog() {
 
     return (isAuthenticated && (
         <>
-            <div>
-                <br></br>
-                <h1 className='header'>Shipping Log Observation</h1>
+            <br></br>
+            <h1 className='header'>Shipping Log Observation</h1>
+            <br></br>
+            <div className='component-container'>
+                <LogTable rows={[]} />
             </div>
         </>
     ));
