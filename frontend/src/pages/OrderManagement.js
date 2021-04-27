@@ -40,7 +40,7 @@ function OrderManagement() {
 
     const getOrderByStatus = async (status) => {
         try {
-            const res = await axios.get(`http://${process.env.REACT_APP_BACKEND_URL}/order/${status}`, {
+            const res = await axios.get(`https://${process.env.REACT_APP_BACKEND_URL}/order/${status}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Access-Control-Allow-Origin': '*',
@@ -74,7 +74,7 @@ function OrderManagement() {
             'customer_phone_number': customerPhoneNumber,
         }
         try {
-            const res = await axios.post(`http://${process.env.REACT_APP_BACKEND_URL}/order`, payload, 
+            const res = await axios.post(`https://${process.env.REACT_APP_BACKEND_URL}/order`, payload, 
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -99,7 +99,7 @@ function OrderManagement() {
             'status': orderStatus,
         }
         try {
-            const res = await axios.patch(`http://${process.env.REACT_APP_BACKEND_URL}/order`, payload, 
+            const res = await axios.patch(`https://${process.env.REACT_APP_BACKEND_URL}/order`, payload, 
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
