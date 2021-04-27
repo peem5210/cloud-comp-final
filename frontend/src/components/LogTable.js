@@ -23,7 +23,7 @@ const useStyles = makeStyles({
       width: '90%',
     },
     container: {
-      maxHeight: '80%',
+      maxHeight: '100%',
     },
 });
 
