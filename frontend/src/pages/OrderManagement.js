@@ -40,13 +40,23 @@ function OrderManagement() {
 
     const getOrderByStatus = async (status) => {
         try {
-            const res = await axios.get(`https://${process.env.REACT_APP_BACKEND_URL}/order/${status}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Access-Control-Allow-Origin': '*',
-                },
-            });
-            setOrderRow(res.data);
+            if (status === 'ALL') {
+                const res = await axios.get(`https://${process.env.REACT_APP_BACKEND_URL}/order`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Access-Control-Allow-Origin': '*',
+                    },
+                });
+                setOrderRow(res.data);
+            } else {
+                const res = await axios.get(`https://${process.env.REACT_APP_BACKEND_URL}/order/${status}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Access-Control-Allow-Origin': '*',
+                    },
+                });
+                setOrderRow(res.data);
+            }
         } catch (err) {
             console.log(err);
         }
