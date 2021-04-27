@@ -31,6 +31,12 @@ function OrderShipping() {
         getToken();
     }, []);
 
+    useEffect(() => {
+        if (token !== '') {
+            getPaidOrder();
+        }
+    }, [token]);
+
     const getPaidOrder = async () => {
         try {
             const res = await axios.get(`http://${process.env.REACT_APP_BACKEND_URL}/order/paid`, {
@@ -93,6 +99,9 @@ function OrderShipping() {
                     </div>
                 </div>
             ) : null}
+            <div>
+                <h1 className='sub-header'>Fill Order Number</h1>
+            </div>
             <div className='component-container'>
                 <ShippingTable />
             </div>
@@ -102,7 +111,10 @@ function OrderShipping() {
             </div>
             <br></br>
             <div className='message-container'>
-            {message ? <Message msg={message} /> : null}
+                {message ? <Message msg={message} /> : null}
+            </div>
+            <div>
+                <h1 className='sub-header'>View Order</h1>
             </div>
             <div className='component-container'>
                 <OrderTable rows={paidOrder} />
