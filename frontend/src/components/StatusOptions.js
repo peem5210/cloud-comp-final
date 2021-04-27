@@ -14,5 +14,9 @@ export const StatusOptions = [
     {
         label: 'COMPLETED',
         value: 'COMPLETED'
+    },
+    {
+        label: 'ALL',
+        value: ''
     }
 ];
