@@ -4,7 +4,7 @@ services:
         build: .
         container_name: "core-api-container"
         ports:
-            - "8000:15400"
+            - "80:15400"
         volumes:
             - ./backend/:/app
         restart: always
