@@ -80,7 +80,7 @@ def get_company(response: Response, user: Auth0User = Security(auth.get_user)):
 @app.get("/order/{status}")
 def order_by_status(status, response: Response, user: Auth0User = Security(auth.get_user)):
     try:
-        return company_service.get_order_with_status(status)
+        return company_service.get_order_with_status(status,user)
     except Exception as e:
         response.status_code=409
         return str(e)

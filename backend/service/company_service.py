@@ -78,11 +78,11 @@ class CompanyService:
         res = df.values.tolist()
         return {'status': False, 'email':email, 'company_name': res[0][1], 'company_address': res[0][2], 'company_phone_number':res[0][3] }
     
-    def get_order_with_status(self,status):
+    def get_order_with_status(self,status, user):
         res=self.mysql_connector.read_query_to_df(
             '''SELECT co.order_number, co.detail, co.customer_name, co.customer_address, co.customer_phone_number, co.status 
-            FROM company c , customer_order co WHERE c.company_id=co.company_id and co.status='{}';
-            '''.format(status))
+            FROM company c , customer_order co WHERE c.company_id=co.company_id and co.status='{}' and c.company_email = '{}';
+            '''.format(status,user.email))
         return [
             {
             "order_number":x[0],
@@ -95,17 +95,17 @@ class CompanyService:
     def send_notification(self,dto,company_email):
         arr = dto.words
         df = self.mysql_connector.read_query_to_df(
-            '''SELECT co.order_number, co.detail, co.customer_name, co.customer_address, co.customer_phone_number, co.status 
+            '''SELECT co.order_number, co.detail, co.customer_name, co.customer_address, co.customer_phone_number, co.status , c.company_name
             FROM company c , customer_order co WHERE c.company_id=co.company_id and co.status='PAID' and c.company_email='{}';
             '''.format(company_email))
         failed = []
         success = []
         for x in arr:
             try:
-                rec = df[(df['order_number']==int(x['order_number']))][['customer_phone_number']].values.tolist()
+                rec = df[(df['order_number']==int(x['order_number']))][['customer_phone_number','company_name']].values.tolist()
                 if (rec):
                     number = '+66' + rec[0][0][1:]
-                    self.aws_service.send_message(number, 'Package sent, parcel number: {}'.format(x['parcel_number']))
+                    self.aws_service.send_message(number, 'Package sent from {}, parcel number: {}'.format(rec[0][-1],x['parcel_number']))
                     self.mysql_connector.execute_query(
                         '''INSERT INTO customer_order (order_number) VALUES ('{}') ON DUPLICATE KEY UPDATE status = 'SHIPPED'
                         '''.format(x['order_number']))
