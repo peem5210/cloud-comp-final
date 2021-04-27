@@ -109,6 +109,14 @@ def patch_order(dto:UpdateOrderDto,response: Response, user: Auth0User = Securit
         response.status_code=409
         return str(e)
         
+@app.get("/order/all")
+def get_all_order_all(response: Response, user: Auth0User = Security(auth.get_user)):
+    try:
+        return company_service.get_order(user)
+    except Exception as e:
+        response.status_code=409
+        return str(e)
+
 @app.get("/order")
 def get_all_order(response: Response, user: Auth0User = Security(auth.get_user)):
     try:
@@ -116,6 +124,7 @@ def get_all_order(response: Response, user: Auth0User = Security(auth.get_user))
     except Exception as e:
         response.status_code=409
         return str(e)
+
 
 @app.post("/order")
 def create_order(dto:CreateOrderDto, response: Response, user: Auth0User = Security(auth.get_user)):
