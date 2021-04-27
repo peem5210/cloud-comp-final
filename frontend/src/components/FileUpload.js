@@ -33,7 +33,7 @@ const FileUpload = (props) => {
       setMessage('Please Select Provider');
     } else {
       try {
-          const res = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/text-from-image/${provider}`, formData, {
+          const res = await axios.post(`http://${process.env.REACT_APP_BACKEND_URL}/text-from-image/${provider}`, formData, {
               headers: {
                   Authorization: `Bearer ${props.token}`,
                   'Access-Control-Allow-Origin': '*',

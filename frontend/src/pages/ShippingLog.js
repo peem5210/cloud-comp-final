@@ -28,7 +28,7 @@ function ShippingLog() {
     useEffect(() => {
         const getShippingLog = async () => {
             try {
-                const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/shipping-log`, {
+                const res = await axios.get(`http://${process.env.REACT_APP_BACKEND_URL}/shipping-log`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         'Access-Control-Allow-Origin': '*',

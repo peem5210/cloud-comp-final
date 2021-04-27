@@ -30,10 +30,15 @@ function ProfileManagement() {
         };
         getToken();
     }, []);
+    useEffect(() => {
+        if (token !== '') {
+            getStatus();
+        }
+    }, [token]);
 
     const getStatus = async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/avail-company-email`, {
+            const res = await axios.get(`http://${process.env.REACT_APP_BACKEND_URL}/avail-company-email`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Access-Control-Allow-Origin': '*',
@@ -67,7 +72,7 @@ function ProfileManagement() {
             'company_email': shopEmail.anchor,
         }
         try {
-            const res = await axios.patch(`${process.env.REACT_APP_BACKEND_URL}/company`, payload, 
+            const res = await axios.patch(`http://${process.env.REACT_APP_BACKEND_URL}/company`, payload, 
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
