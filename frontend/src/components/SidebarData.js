@@ -14,4 +14,9 @@ export const SidebarData = [
         path: '/shipping',
         cName: 'nav-text'
     },
+    {
+        title: 'View Ship Log',
+        path: '/log',
+        cName: 'nav-text'
+    },
 ]
