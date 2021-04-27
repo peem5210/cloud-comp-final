@@ -5,6 +5,7 @@ import Sidebar from './components/Sidebar';
 import ProfileManagement from './pages/ProfileManagement';
 import OrderManagement from './pages/OrderManagement';
 import OrderShipping from './pages/OrderShipping';
+import ShippingLog from './pages/ShippingLog';
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route path='/' exact component={ProfileManagement} />
             <Route path='/order' exact component={OrderManagement} />
             <Route path='/shipping' exact component={OrderShipping} />
+            <Route path='/log' exact component={ShippingLog} />
           </Switch>
         </Auth0ProviderWithHistory>
       </Router>

@@ -2,6 +2,12 @@
     text-align: center;
 }
 
+.sub-header {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
 .button-container {
     display: flex;
     justify-content: center;
@@ -12,9 +18,14 @@
     justify-content: center;
 }
 
+.form-selector {
+    margin-bottom: 15px;
+    z-index: 9997;
+}
+
 .selector {
     width: 400px;
-    z-index: 9997;
+    z-index: 9996;
 }
 
 .logo-container {

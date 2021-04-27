@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
+import Message from '../components/Message';
 import Select from 'react-select';
 import OrderTable from '../components/OrderTable';
 import { StatusOptions } from '../components/StatusOptions';
@@ -15,7 +16,11 @@ function OrderManagement() {
     const [customerPhoneNumber, setCustomerPhoneNumber] = useState('');
     const [customerAddress, setCustomerAddress] = useState('');
     const [orderDetail, setOrderDetail] = useState('');
-    const [message, setMessage] = useState('');
+    const [orderNumber, setOrderNumber] = useState('');
+    const [orderStatus, setOrderStatus] = useState('');
+    const [currentStatus, setCurrentStatus] = useState('');
+    const [createMessage, setCreateMessage] = useState('');
+    const [updateMessage, setUpdateMessage] = useState('');
     const [orderRow, setOrderRow] = useState([]);
 
     useEffect(() => {
@@ -49,21 +54,24 @@ function OrderManagement() {
             });
             setOrderRow(res.data);
         } catch (err) {
-            if (err.response.status === 500) {
-                setMessage('There was a problem with the server');
-            } else {
-                setMessage(err.response.data.msg);
-            }
+            console.log(err);
         }
     };
 
     const onSelectStatus = (selectedItem) => {
         if (selectedItem !== null) {
+            setCurrentStatus(selectedItem.value);
             getOrderByStatus(selectedItem.value);
         }
     };
 
-    const onSubmit = async e => {
+    const onSelectOrderStatus = (selectedItem) => {
+        if (selectedItem !== null) {
+            setOrderStatus(selectedItem.value);
+        }
+    };
+
+    const onSubmitCreateOrder = async e => {
         e.preventDefault()
         const payload = {
             'detail': orderDetail,
@@ -71,25 +79,48 @@ function OrderManagement() {
             'customer_address': customerAddress,
             'customer_phone_number': customerPhoneNumber,
         }
-        console.log(payload);
-        /*
         try {
-            const res = await axios.patch(`http://${process.env.REACT_APP_BACKEND_URL}/company`, payload, 
+            const res = await axios.post(`http://${process.env.REACT_APP_BACKEND_URL}/order`, payload, 
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Access-Control-Allow-Origin': '*',
                 },
             });
+            setCreateMessage(`Order created!`);
         } catch (err) {
             if (err.response.status === 500) {
-                setMessage('There was a problem with the server');
+                setCreateMessage('There was a problem with the server');
             } else {
-                setMessage(err.response.data.msg);
+                setCreateMessage(err.response.data.msg);
             }
         }
-        getStatus();
-        */
+        getOrderByStatus(currentStatus);
+    };
+
+    const onSubmitUpdateStatus = async e => {
+        e.preventDefault()
+        const payload = {
+            'order_number': orderNumber,
+            'status': orderStatus,
+        }
+        try {
+            const res = await axios.patch(`http://${process.env.REACT_APP_BACKEND_URL}/order`, payload, 
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Access-Control-Allow-Origin': '*',
+                },
+            });
+            setUpdateMessage(`Order ${orderNumber} updated!`);
+        } catch (err) {
+            if (err.response.status === 500) {
+                setUpdateMessage('There was a problem with the server');
+            } else {
+                setUpdateMessage(err.response.data.msg);
+            }
+        }
+        getOrderByStatus(currentStatus);
     };
 
     return (isAuthenticated && (
@@ -102,8 +133,9 @@ function OrderManagement() {
                 <div className='logo-container'>
                     <img style={{ width: '50%' }} src={logo} alt='' />
                 </div>
-                <br></br>
-                <form onSubmit={onSubmit}>
+                <h1 className='sub-header'>Create Order</h1>
+                {createMessage ? <Message msg={createMessage} /> : null}
+                <form onSubmit={onSubmitCreateOrder}>
                     <div className='form-group'>
                         <label>Customer Name</label>
                         <input type="text" className="form-control" onChange={e => setCustomerName(e.target.value)} placeholder="Enter customer name"></input>
@@ -124,8 +156,34 @@ function OrderManagement() {
                         Create Order
                     </button>
                 </form>
+                <br></br>
+                <h1 className='sub-header'>Update Order Status</h1>
+                {updateMessage ? <Message msg={updateMessage} /> : null}
+                <form onSubmit={onSubmitUpdateStatus}>
+                    <div className='form-group'>
+                        <label>Order Number</label>
+                        <input type="text" className="form-control" onChange={e => setOrderNumber(e.target.value)} placeholder="Enter order number"></input>
+                    </div>
+                    <div className='form-selector'>
+                        <Select
+                            className="basic-single"
+                            classNamePrefix="select"
+                            isClearable={true}
+                            isSearchable={true}
+                            options={StatusOptions.slice(0,4)}
+                            placeholder="Select Status"
+                            isMulti={false}
+                            onChange={onSelectOrderStatus}
+                            maxMenuHeight={120}
+                        />
+                    </div>
+                    <button type="submit" className="btn btn-primary" >
+                        Update Order
+                    </button>
+                </form>
             </div>
             <br></br>
+            <h1 className='sub-header'>View Order</h1>
             <div className='component-container'>
                 <div className='selector'>
                     <Select
