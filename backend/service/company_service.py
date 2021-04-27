@@ -117,7 +117,8 @@ class CompanyService:
         company_id = res[0][0]
         df = self.mysql_connector.read_query_to_df(
             '''SELECT co.order_number, customer_name, customer_phone_number, customer_address, detail, parcel_number, shipping_time
-                FROM customer_order co INNER JOIN shipping_log sl WHERE co.company_id='{}';
+            FROM customer_order co INNER JOIN shipping_log sl
+            ON co.order_number = sl.order_number WHERE co.company_id='{}';
             '''.format(company_id))
         return [
             {
