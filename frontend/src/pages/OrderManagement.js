@@ -38,12 +38,6 @@ function OrderManagement() {
         getToken();
     }, []);
 
-    useEffect(() => {
-        if (token !== '') {
-            console.log(token);
-        }
-    }, [token]);
-
     const getOrderByStatus = async (status) => {
         try {
             const res = await axios.get(`http://${process.env.REACT_APP_BACKEND_URL}/order/${status}`, {

@@ -41,7 +41,6 @@ function ShippingLog() {
         };
 
         if (token !== '') {
-            console.log(token);
             getShippingLog();
         }
     }, [token]);

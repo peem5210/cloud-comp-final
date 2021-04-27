@@ -31,13 +31,6 @@ function ProfileManagement() {
         getToken();
     }, []);
 
-    useEffect(() => {
-        if (token !== '') {
-            console.log(token);
-            getStatus();
-        }
-    }, [token]);
-
     const getStatus = async () => {
         try {
             const res = await axios.get(`http://${process.env.REACT_APP_BACKEND_URL}/avail-company-email`, {
