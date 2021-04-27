@@ -39,7 +39,6 @@ function OrderManagement() {
     }, []);
 
     const getOrderByStatus = async (status) => {
-        console.log(`https://${process.env.REACT_APP_BACKEND_URL}/order/${status}`);
         try {
             const res = await axios.get(`https://${process.env.REACT_APP_BACKEND_URL}/order/${status}`, {
                 headers: {
