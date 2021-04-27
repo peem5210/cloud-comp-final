@@ -1,5 +1,8 @@
-FROM python:3.9
-COPY ./backend /app
-WORKDIR /app
-RUN pip3 install -r requirements.txt
-CMD ["uvicorn", "server:app", "--reload", "--host", "0.0.0.0", "--port", "15400"]
+# pull official base image
+FROM node:alpine
+WORKDIR '/frontend'
+COPY /frontend/package*.json /frontend
+RUN npm install 
+COPY /frontend /frontend
+EXPOSE 3000
+CMD ["npm", "start"]
