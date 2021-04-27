@@ -124,6 +124,13 @@ def create_order(dto:CreateOrderDto, response: Response, user: Auth0User = Secur
     except Exception as e:
         response.status_code=409
         return str(e)
+@app.get("/shipping-log")
+def get_shipping_log(response: Response, user: Auth0User = Security(auth.get_user)):
+    try:
+        return company_service.get_shipping_log(user)
+    except Exception as e:
+        response.status_code=409
+        return str(e)
 
 
 class NotificationDto(BaseModel):

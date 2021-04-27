@@ -108,6 +108,27 @@ class CompanyService:
             "customer_phone_number":x[4],
             "status":x[5]
             } for x in res.values.tolist()]
+    def get_shipping_log(self,user):
+        res = self.mysql_connector.execute_query(
+            '''SELECT company_id FROM company WHERE company_email='{}' 
+            '''.format(user.email))
+        if not res:
+            return []
+        company_id = res[0][0]
+        df = self.mysql_connector.read_query_to_df(
+            '''SELECT co.order_number, customer_name, customer_phone_number, customer_address, detail, parcel_number, shipping_time
+                FROM customer_order co INNER JOIN shipping_log sl WHERE co.company_id='{}';
+            '''.format(company_id))
+        return [
+            {
+                "order_number":x[0],
+                "customer_name":x[1],
+                "customer_phone_number":x[2],
+                "customer_address":x[3],
+                "detail":x[4],
+                "parcel_number":x[5],
+                "shipping_time":x[6]
+            } for x in df.values.tolist()]
     def send_notification(self,dto,company_email):
         arr = dto.words
         df = self.mysql_connector.read_query_to_df(
@@ -125,6 +146,11 @@ class CompanyService:
                     self.mysql_connector.execute_query(
                         '''INSERT INTO customer_order (order_number) VALUES ('{}') ON DUPLICATE KEY UPDATE status = 'SHIPPED'
                         '''.format(x['order_number']))
+
+                    self.mysql_connector.execute_query(
+                        '''INSERT INTO shipping_log (parcel_number, order_number, shipping_time) VALUES ('{}', '{}', NOW()) 
+                        '''.format(x['parcel_number'],x['order_number']))
+
                     success.append(x)
                 else:
                     x['reason']='order_number not matched'
