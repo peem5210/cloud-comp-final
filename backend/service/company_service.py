@@ -13,6 +13,12 @@ class UpdateOrderDto(BaseModel):
     order_number: str
     status: str
 
+class CreateOrderDto(BaseModel):
+    detail: str
+    customer_name: str
+    customer_address: str
+    customer_phone_number: str
+
 
 class CompanyService:
     def __init__(self,aws_service,mysql_connector):
@@ -42,7 +48,17 @@ class CompanyService:
             "status":x[5]
             } for x in df.values.tolist()]
 
-    def insert_company(self,dto: CreateCompanyDto, user):
+    def insert_order(self, dto: CreateCompanyDto, user):
+        res = self.mysql_connector.execute_query(
+            '''SELECT company_id FROM company WHERE company_email='{}' 
+            '''.format(user.email))
+        self.mysql_connector.execute_query(
+            '''INSERT INTO customer_order (detail, customer_name, customer_address, customer_phone_number, company_id, status)
+            VALUES ('{}', '{}', '{}', '{}', '{}', 'ORDERED');
+            '''.format(dto.detail, dto.customer_name, dto.customer_address, dto.customer_phone_number, res[0][0]))
+        return dto
+
+    def insert_company(self,dto: CreateOrderDto, user):
         self.mysql_connector.execute_query(
             '''INSERT INTO company (company_name, company_address, company_phone_number, company_email)
             VALUES ('{}', '{}', '{}', '{}');

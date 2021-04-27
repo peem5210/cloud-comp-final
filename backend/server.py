@@ -12,7 +12,7 @@ from pydantic import BaseModel
 
 from service.util.aws_connector import AWSConnector
 from service.util.mysql_connector import MySQLConnector
-from service.company_service import CompanyService, CreateCompanyDto, UpdateCompanyDto, UpdateOrderDto
+from service.company_service import CompanyService, CreateCompanyDto, UpdateCompanyDto, UpdateOrderDto, CreateOrderDto
 from service.aws_service import AwsService
 load_dotenv()
 
@@ -113,6 +113,14 @@ def patch_order(dto:UpdateOrderDto,response: Response, user: Auth0User = Securit
 def get_all_order(response: Response, user: Auth0User = Security(auth.get_user)):
     try:
         return company_service.get_order(user)
+    except Exception as e:
+        response.status_code=409
+        return str(e)
+
+@app.post("/order")
+def create_order(dto:CreateOrderDto, response: Response, user: Auth0User = Security(auth.get_user)):
+    try:
+        return company_service.insert_order(dto,user)
     except Exception as e:
         response.status_code=409
         return str(e)
