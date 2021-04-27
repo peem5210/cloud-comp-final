@@ -33,7 +33,7 @@ function OrderShipping() {
 
     const getPaidOrder = async () => {
         try {
-            const res = await axios.get(`http://${process.env.REACT_APP_BACKEND_URL}/order/paid`, {
+            const res = await axios.get(`https://${process.env.REACT_APP_BACKEND_URL}/order/paid`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Access-Control-Allow-Origin': '*',
@@ -54,7 +54,7 @@ function OrderShipping() {
             return {parcel_number, order_number};
         });
         try {
-            const res = await axios.post(`http://${process.env.REACT_APP_BACKEND_URL}/notification`, 
+            const res = await axios.post(`https://${process.env.REACT_APP_BACKEND_URL}/notification`, 
             {
                 words: words,
             }, 
