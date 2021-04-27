@@ -71,7 +71,7 @@ function OrderManagement() {
         }
     };
 
-    const onSubmit = async e => {
+    const onSubmitCreateOrder = async e => {
         e.preventDefault()
         const payload = {
             'detail': orderDetail,
@@ -79,16 +79,15 @@ function OrderManagement() {
             'customer_address': customerAddress,
             'customer_phone_number': customerPhoneNumber,
         }
-        console.log(payload);
-        /*
         try {
-            const res = await axios.patch(`http://${process.env.REACT_APP_BACKEND_URL}/company`, payload, 
+            const res = await axios.post(`http://${process.env.REACT_APP_BACKEND_URL}/order`, payload, 
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
                     'Access-Control-Allow-Origin': '*',
                 },
             });
+            setCreateMessage(`Order created!`);
         } catch (err) {
             if (err.response.status === 500) {
                 setCreateMessage('There was a problem with the server');
@@ -96,8 +95,7 @@ function OrderManagement() {
                 setCreateMessage(err.response.data.msg);
             }
         }
-        getStatus();
-        */
+        getOrderByStatus(currentStatus);
     };
 
     const onSubmitUpdateStatus = async e => {
@@ -137,7 +135,7 @@ function OrderManagement() {
                 </div>
                 <h1 className='sub-header'>Create Order</h1>
                 {createMessage ? <Message msg={createMessage} /> : null}
-                <form onSubmit={onSubmit}>
+                <form onSubmit={onSubmitCreateOrder}>
                     <div className='form-group'>
                         <label>Customer Name</label>
                         <input type="text" className="form-control" onChange={e => setCustomerName(e.target.value)} placeholder="Enter customer name"></input>
