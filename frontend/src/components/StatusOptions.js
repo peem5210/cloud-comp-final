@@ -17,6 +17,6 @@ export const StatusOptions = [
     },
     {
         label: 'ALL',
-        value: ''
+        value: 'ALL'
     }
 ];
